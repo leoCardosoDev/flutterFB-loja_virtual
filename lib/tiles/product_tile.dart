@@ -14,7 +14,7 @@ class ProductTile extends StatelessWidget {
     return InkWell(
       onTap: (){
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => ProdutcScreen())
+          MaterialPageRoute(builder: (context) => ProductScreen(product))
         );
       },
       child: Card(
