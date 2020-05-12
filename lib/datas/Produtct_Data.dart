@@ -20,6 +20,14 @@ class ProductData{
     sizes = snapshot.data['sizes'];
   }
 
+  Map<String, dynamic> toResumeData(){
+    return {
+      'title' : this.title,
+      'description' : this.description,
+      'price' : this.price
+    };
+  }
+
   String get category => _category;
 
   set category(String value) {

@@ -44,7 +44,7 @@ class CustomDrawer extends StatelessWidget {
                         child: Image.asset(
                           'assets/images/logo.png',
                           width: 200.0,
-                          height: 90.0,
+                           height: UserModel.of(context).isLoggedIn() ? 90.0 : 125.0,
                         ),
                       ),
                     ),

@@ -1,6 +1,11 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:lojavirtualapp/datas/Cart_Product.dart';
 import 'package:lojavirtualapp/datas/Produtct_Data.dart';
+import 'package:lojavirtualapp/models/cart_model.dart';
+import 'package:lojavirtualapp/models/user_model.dart';
+import 'package:lojavirtualapp/screens/cart_screen.dart';
+import 'package:lojavirtualapp/screens/login_screen.dart';
 
 class ProductScreen extends StatefulWidget {
   final ProductData product;
@@ -109,11 +114,32 @@ class _ProductScreenState extends State<ProductScreen> {
                 SizedBox(
                   height: 44.0,
                   child: RaisedButton(
-                    onPressed: size != null ? (){} : null,
+                    onPressed: size != null
+                        ? () {
+                            if (UserModel.of(context).isLoggedIn()) {
+                              CartProduct cartProduct = CartProduct();
+                              cartProduct.size = size;
+                              cartProduct.quantity = 1;
+                              cartProduct.pid = product.id;
+                              cartProduct.category = product.category;
+                              CartModel.of(context).addCartItem(cartProduct);
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => CartScreen()
+                              ));
+
+                            } else {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => LoginScreen()));
+                            }
+                          }
+                        : null,
                     color: _primaryColor,
                     textColor: Colors.white,
                     child: Text(
-                      "Adicionar ao carrinho",
+                      UserModel.of(context).isLoggedIn()
+                          ? "Adicionar ao carrinho"
+                          : "Entre para Comprar",
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
@@ -122,7 +148,10 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                 ),
                 SizedBox(height: 16.0),
-                Text('Descrição', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),),
+                Text(
+                  'Descrição',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+                ),
                 Text(product.description),
               ],
             ),
