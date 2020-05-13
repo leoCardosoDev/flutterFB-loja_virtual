@@ -15,6 +15,7 @@ class CartTile extends StatelessWidget {
     Color _primaryColor = Theme.of(context).primaryColor;
 
     Widget _buildContent() {
+      CartModel.of(context).updatePrice();
       return Row(
         children: <Widget>[
           Container(

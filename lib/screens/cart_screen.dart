@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:lojavirtualapp/models/cart_model.dart';
 import 'package:lojavirtualapp/models/user_model.dart';
 import 'package:lojavirtualapp/screens/login_screen.dart';
+import 'package:lojavirtualapp/screens/order_screen.dart';
 import 'package:lojavirtualapp/tiles/cart_tile.dart';
+import 'package:lojavirtualapp/widgets/cart_price.dart';
+import 'package:lojavirtualapp/widgets/discount_card.dart';
+import 'package:lojavirtualapp/widgets/ship_card.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class CartScreen extends StatelessWidget {
@@ -76,7 +80,7 @@ class CartScreen extends StatelessWidget {
           } else if (model.products == null || model.products.length == 0) {
             return Center(
               child: Text(
-                "Carrinho vazio!",
+                    "Carrinho vazio!",
                 style: TextStyle(
                   fontSize: 18.0,
                   color: _primaryColor,
@@ -88,10 +92,19 @@ class CartScreen extends StatelessWidget {
               child: ListView(
                 children: <Widget>[
                   Column(
-                    children: model.products.map((product){
+                    children: model.products.map((product) {
                       return CartTile(product);
                     }).toList(),
                   ),
+                  DiscountCard(),
+                  ShipCard(),
+                  CartPrice(() async {
+                    String orderId = await model.finishOrder();
+                    if (orderId != null)
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => OrderScreen(orderId)
+                      ));
+                  }),
                 ],
               ),
             );
